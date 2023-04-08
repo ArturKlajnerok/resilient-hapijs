@@ -1,0 +1,19 @@
+{
+  "name": "resilient-hapijs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArturKlajnerok/resilient-hapijs.git"
+  },
+  "author": "ArturKlajnerok",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ArturKlajnerok/resilient-hapijs/issues"
+  },
+  "homepage": "https://github.com/ArturKlajnerok/resilient-hapijs#readme"
+}
