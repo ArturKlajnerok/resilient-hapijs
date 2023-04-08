@@ -9,6 +9,14 @@ const init = async () => {
         host: 'localhost'
     });
 
+    server.route({
+        method: 'GET',
+        path: '/',
+        handler: (request, h) => {
+            return 'Hello, Hapi.js!';
+        }
+    });
+
     await server.start();
     console.log('Server running on %s', server.info.uri);
 };
