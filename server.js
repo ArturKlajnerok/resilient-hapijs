@@ -4,6 +4,8 @@ const Hapi = require('@hapi/hapi');
 
 const init = async () => {
 
+    const tokens = [];
+
     const server = Hapi.server({
         port: 3000,
         host: 'localhost'
@@ -15,6 +17,24 @@ const init = async () => {
         handler: (request, h) => {
             request.log('info', 'GET hello hapi');
             return 'Hello, Hapi.js!';
+        }
+    });
+
+    server.route({
+        method: 'GET',
+        path: '/tokens',
+        handler: async (request, h) => {
+            return h.response(tokens).code(200);
+        }
+    });
+
+    server.route({
+        method: 'POST',
+        path: '/tokens',
+        handler: async (request, h) => {
+            const newToken = request.payload;
+            tokens.push(newToken);
+            return h.response(newToken).code(201);
         }
     });
 
