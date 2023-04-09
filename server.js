@@ -1,7 +1,11 @@
 'use strict';
 
 const Hapi = require('@hapi/hapi');
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
 const Joi = require('joi');
+const HapiSwagger = require('hapi-swagger');
+const Pack = require('./package');
 
 const init = async () => {
 
@@ -22,6 +26,11 @@ const init = async () => {
         offset: Joi.number().integer().min(0).default(0)
     });
 
+    const swaggerOptions = { info: {
+        title: 'Token API Documentation',
+        version: Pack.version,
+    }};
+
     server.route({
         method: 'GET',
         path: '/',
@@ -35,6 +44,9 @@ const init = async () => {
         method: 'GET',
         path: '/tokens',
         options: {
+            description: 'Get all tokens',
+            notes: 'Returns a list of all tokens',
+            tags: ['api', 'tokens'],
             validate: {
                 query: paginationSchema
             }
@@ -58,6 +70,15 @@ const init = async () => {
             return h.response(newToken).code(201);
         }
     });
+
+    await server.register([
+        Inert,
+        Vision,
+        {
+            plugin: HapiSwagger,
+            options: swaggerOptions
+        }
+    ]);
 
     server.events.on('log', (event, tags) => {
         if (tags.info) {
