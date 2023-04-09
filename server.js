@@ -1,6 +1,7 @@
 'use strict';
 
 const Hapi = require('@hapi/hapi');
+const Joi = require('joi');
 
 const init = async () => {
 
@@ -9,6 +10,11 @@ const init = async () => {
     const server = Hapi.server({
         port: 3000,
         host: 'localhost'
+    });
+
+    const tokenSchema = Joi.object({
+        id: Joi.number().required().min(1),
+        value: Joi.string().required().min(1)
     });
 
     server.route({
@@ -31,6 +37,11 @@ const init = async () => {
     server.route({
         method: 'POST',
         path: '/tokens',
+        options: {
+            validate: {
+                payload: tokenSchema
+            }
+        },
         handler: async (request, h) => {
             const newToken = request.payload;
             tokens.push(newToken);
