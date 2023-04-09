@@ -17,6 +17,11 @@ const init = async () => {
         value: Joi.string().required().min(1)
     });
 
+    const paginationSchema = Joi.object({
+        limit: Joi.number().integer().min(1).max(100).default(10),
+        offset: Joi.number().integer().min(0).default(0)
+    });
+
     server.route({
         method: 'GET',
         path: '/',
@@ -29,6 +34,11 @@ const init = async () => {
     server.route({
         method: 'GET',
         path: '/tokens',
+        options: {
+            validate: {
+                query: paginationSchema
+            }
+        },
         handler: async (request, h) => {
             return h.response(tokens).code(200);
         }
